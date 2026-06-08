@@ -2,8 +2,9 @@ import { setupAuthListener } from './auth.js';
 import { loadMaterialsTable } from './materials.js';
 import { loadQuestionsFromGoogleSheets } from './test.js';
 import { render } from './render.js';
+import { auth } from './firebase-config.js';
+import { onAuthStateChanged } from 'firebase/auth';
 
-// Инициализация приложения
 async function init() {
     console.log('🚀 Запуск CSM 2.0');
     
@@ -13,12 +14,16 @@ async function init() {
     // Загружаем вопросы теста
     await loadQuestionsFromGoogleSheets();
     
-    // Настраиваем слушатель авторизации
+    // Устанавливаем слушатель авторизации
     setupAuthListener();
     
-    // Первоначальный рендер
+    // Проверка: если пользователь уже был в localStorage, onAuthStateChanged восстановит его
+    const currentAuthUser = auth.currentUser;
+    if (currentAuthUser) {
+        console.log("✅ User restored from localStorage:", currentAuthUser.email);
+    }
+    
     render();
 }
 
-// Запускаем приложение
 init();
