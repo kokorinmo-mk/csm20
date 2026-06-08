@@ -348,13 +348,13 @@ function renderHistory() {
     return `<div class="card">
         <h1>📜 История результатов</h1>
         ${history.map(item => {
-            // Для теста показываем проценты, для самооценки тоже проценты (overallScore * 10)
             let displayScore;
             if (item.type === 'test') {
                 displayScore = `${item.overallScore}%`;
             } else {
-                // Самооценка: переводим из 0-10 в 0-100%
-                displayScore = `${Math.round(item.overallScore * 10)}%`;
+                // Самооценка: переводим из 0-10 в проценты (0-100%)
+                const percent = Math.round(item.overallScore * 10);
+                displayScore = `${percent}%`;
             }
             
             return `
@@ -567,11 +567,19 @@ function showHistoryModal(id, type) {
     if (modal && title && content) {
         title.innerText = type === 'test' ? 'Результат теста' : 'Результат самооценки';
         
+        // Для самооценки показываем в процентах
+        let overallDisplay;
+        if (type === 'test') {
+            overallDisplay = `${item.overallScore}%`;
+        } else {
+            overallDisplay = `${Math.round(item.overallScore * 10)}%`;
+        }
+        
         content.innerHTML = `
             <p style="color:#666;margin-bottom:16px">${formatDate(item.date)}</p>
             <div class="text-center" style="margin-bottom:20px">
                 <span style="font-size:36px;font-weight:bold;color:${type === 'test' ? '#667eea' : '#28a745'}">
-                    ${type === 'test' ? item.overallScore + '%' : item.overallScore.toFixed(1) + '/10'}
+                    ${overallDisplay}
                 </span>
             </div>
             <h3>Детали:</h3>
@@ -579,7 +587,7 @@ function showHistoryModal(id, type) {
                 <div style="margin-bottom:12px">
                     <div class="justify-between flex">
                         <span>${AREA_NAMES[i]}</span>
-                        <span>${type === 'test' ? s + '%' : s.toFixed(1)}</span>
+                        <span>${type === 'test' ? s + '%' : (s * 10).toFixed(0) + '%'}</span>
                     </div>
                     <div class="progress-bar" style="height:4px">
                         <div class="progress-fill" style="width:${type === 'test' ? s : s * 10}%"></div>
