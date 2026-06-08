@@ -3,8 +3,9 @@ services:
     name: csm-recommendations
     runtime: python
     buildCommand: pip install -r backend/requirements.txt
-    startCommand: gunicorn --chdir backend server:app --timeout 120 --workers 1
+    startCommand: gunicorn --chdir backend server:app --timeout 120 --workers 2
     plan: free
     envVars:
       - key: QWEN_API_KEY
         sync: false
+    healthCheckPath: /health

@@ -1,19 +1,17 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
+*.so
 .Python
 env/
 venv/
-.venv/
-*.egg-info/
-dist/
-build/
+ENV/
+.venv
 
-# Environment variables
+# Environment
 .env
-.env.local
+.venv
 
 # IDE
 .vscode/
