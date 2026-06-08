@@ -347,7 +347,17 @@ function renderHistory() {
     
     return `<div class="card">
         <h1>📜 История результатов</h1>
-        ${history.map(item => `
+        ${history.map(item => {
+            // Для теста показываем проценты, для самооценки тоже проценты (overallScore * 10)
+            let displayScore;
+            if (item.type === 'test') {
+                displayScore = `${item.overallScore}%`;
+            } else {
+                // Самооценка: переводим из 0-10 в 0-100%
+                displayScore = `${Math.round(item.overallScore * 10)}%`;
+            }
+            
+            return `
             <div class="history-item" data-history-id="${item.id}" data-history-type="${item.type}">
                 <div class="justify-between flex">
                     <div>
@@ -356,11 +366,11 @@ function renderHistory() {
                         <p style="font-size:12px;color:#666">${formatDate(item.date)}</p>
                     </div>
                     <span style="font-size:20px;font-weight:bold;color:${item.type === 'test' ? '#667eea' : '#28a745'}">
-                        ${item.displayScore}
+                        ${displayScore}
                     </span>
                 </div>
-            </div>
-        `).join('')}
+            </div>`;
+        }).join('')}
     </div>
     <div id="historyModal" class="modal">
         <div class="modal-content">
