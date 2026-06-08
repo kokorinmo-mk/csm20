@@ -171,16 +171,14 @@ export function getAllHistory() {
         ...r,
         typeName: 'Тест',
         icon: '📝',
-        type: 'test',
-        displayScore: r.type === 'test' ? `${r.overallScore}%` : `${r.overallScore.toFixed(1)}/10`
+        type: 'test'
     }));
     
     let selfItems = userResults.selfResults.map(r => ({
         ...r,
         typeName: 'Самооценка',
         icon: '📊',
-        type: 'self',
-        displayScore: `${r.overallScore.toFixed(1)}/10`
+        type: 'self'
     }));
     
     return [...testItems, ...selfItems].sort((a, b) => b.date - a.date);
